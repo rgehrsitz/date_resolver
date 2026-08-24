@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Resolver for Gmail</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo-title">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <h1>Date Resolver</h1>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="enabled-toggle" checked>
+        <span class="slider round"></span>
+      </label>
+    </header>
+
+    <div class="settings-section">
+      <div class="setting-item">
+        <label for="display-mode">Display Mode</label>
+        <select id="display-mode" class="select-input">
+          <option value="pill">Inline Pill (e.g. tomorrow (Jan 16))</option>
+          <option value="tooltip">Subtle Underline & Tooltip Only</option>
+          <option value="inline_replace">Full Replacement</option>
+        </select>
+      </div>
+
+      <div class="setting-item">
+        <label for="format-style">Date Format</label>
+        <select id="format-style" class="select-input">
+          <option value="with_day">Thu, Jan 16, 2020 (Recommended)</option>
+          <option value="medium">Jan 16, 2020</option>
+          <option value="long">Thursday, January 16, 2020</option>
+          <option value="iso">2020-01-16 (ISO)</option>
+          <option value="short">1/16/2020</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="sandbox-section">
+      <h3>Live Date Preview</h3>
+      <div class="sandbox-field">
+        <label for="test-sent-date">Sample Email Sent Date</label>
+        <input type="date" id="test-sent-date" class="text-input">
+      </div>
+      <div class="sandbox-field">
+        <label for="test-text">Sample Text</label>
+        <input type="text" id="test-text" class="text-input" value="Let's meet tomorrow or this Friday.">
+      </div>
+      <div class="sandbox-field">
+        <label>Resolved Result</label>
+        <div id="test-output" class="preview-box"></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span>Auto-resolves relative dates relative to email sent time</span>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

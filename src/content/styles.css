@@ -1,0 +1,27 @@
+/* Date Resolver for Gmail Styles */
+
+.date-resolver-match {
+  position: relative;
+  display: inline;
+  border-bottom: 2px dotted #1a73e8;
+  cursor: help;
+  transition: background-color 0.15s ease-in-out;
+  border-radius: 2px;
+}
+
+.date-resolver-match:hover {
+  background-color: rgba(26, 115, 232, 0.12);
+}
+
+.date-resolver-pill {
+  font-size: 0.85em;
+  font-weight: 500;
+  color: #1a73e8;
+  opacity: 0.9;
+  user-select: all;
+}
+
+/* Custom Tooltip Styling */
+.date-resolver-match[title] {
+  text-decoration: none;
+}

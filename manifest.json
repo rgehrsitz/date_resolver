@@ -1,30 +1,49 @@
 {
   "manifest_version": 3,
-  "name": "Date Resolver fro GMail",
+  "name": "Date Resolver for GMail",
   "short_name": "date_resolver",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Robert Gehrsitz",
-
-  "description": "Resolving 'Today', 'Tomorrow', and more in GMail",
-
+  "description": "Resolves relative dates like 'today', 'tomorrow', 'this Friday', and 'next week' in Gmail relative to the email sent date.",
+  "icons": {
+    "16": "dist/icons/icon16.png",
+    "32": "dist/icons/icon32.png",
+    "48": "dist/icons/icon48.png",
+    "128": "dist/icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "dist/popup.html",
+    "default_title": "Date Resolver Settings",
+    "default_icon": {
+      "16": "dist/icons/icon16.png",
+      "32": "dist/icons/icon32.png",
+      "48": "dist/icons/icon48.png",
+      "128": "dist/icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/*"
+  ],
   "content_scripts": [
     {
       "matches": ["*://mail.google.com/*"],
-      "js": ["src/extensionInjector.js"],
+      "js": ["dist/extensionInjector.js"],
       "run_at": "document_start"
     }
   ],
-
   "web_accessible_resources": [
     {
       "resources": [
         "dist/gmailJsLoader.js",
         "dist/extension.js",
         "dist/gmailJsLoader.js.map",
-        "dist/extension.js.map"
+        "dist/extension.js.map",
+        "dist/styles.css"
       ],
-      "matches": ["<all_urls>"]
+      "matches": ["*://mail.google.com/*"]
     }
-  ],
-  "host_permissions": ["https://*/*"]
+  ]
 }
