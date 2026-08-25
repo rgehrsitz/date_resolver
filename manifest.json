@@ -30,20 +30,9 @@
   "content_scripts": [
     {
       "matches": ["*://mail.google.com/*"],
-      "js": ["dist/extensionInjector.js"],
+      "css": ["dist/styles.css"],
+      "js": ["dist/extension.js"],
       "run_at": "document_start"
-    }
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "dist/gmailJsLoader.js",
-        "dist/extension.js",
-        "dist/gmailJsLoader.js.map",
-        "dist/extension.js.map",
-        "dist/styles.css"
-      ],
-      "matches": ["*://mail.google.com/*"]
     }
   ]
 }

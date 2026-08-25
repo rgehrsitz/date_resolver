@@ -1,20 +1,24 @@
-# Date Resolver for GMail
+# Date Resolver for Gmail
 
-A Chrome extension (Manifest V3) that intelligently detects and resolves relative date mentions (e.g., *"today"*, *"tomorrow"*, *"this Friday"*, *"next Tuesday"*, *"in 3 days"*, *"2 weeks ago"*) in Gmail messages, accurately anchored to the timestamp when each email was sent.
+A Manifest V3 Chrome extension that resolves relative dates in Gmail messages using the timestamp of the individual email—not the day you happen to read it.
 
 ---
 
 ## Features
 
-- **Sent-Date Anchored Resolution**: Computes relative dates based on when the email was originally sent, not your current local date.
-- **Natural Language Understanding**: Powered by `chrono-node` to parse complex date expressions (*"this Friday"*, *"next week"*, *"3 days ago"*, etc.).
-- **Safe & Non-Destructive**: Annotates text nodes using standard DOM `TreeWalker` without mutating raw HTML or interfering with email replies, forwarding, or copy/pasting.
+- **Sent-date anchored**: “tomorrow” in an old email resolves relative to when that message was sent.
+- **Natural language support**: Understands phrases such as “this Friday,” “next week,” “in a day,” “two days ago,” “in 3 hours,” and “3 weeks from now.”
+- **Safe, non-destructive annotations**: Uses DOM text nodes rather than rewriting email HTML, preserving links, formatting, replies, and copy/paste behavior.
 - **Customizable Display Modes**:
-  - **Inline Pill**: Display resolved dates inline, e.g., `tomorrow (Fri, Jan 16)`.
-  - **Hover Tooltip**: Keep email layout clean with subtle dotted underlines and detailed hover tooltips.
-  - **Full Replacement**: Seamless inline text substitution.
-- **Configurable Formats**: Support for `Thu, Jan 16, 2020`, `Jan 16, 2020`, `2020-01-16 (ISO)`, and more.
-- **Settings Popup with Live Preview**: Test phrases in real-time against custom sample dates inside the extension popup.
+  - **Inline pill**: `tomorrow (Fri, Jan 16, 2020)`.
+  - **Tooltip**: Keeps the original phrase with a resolved-date tooltip.
+  - **Full replacement**: Replaces the phrase with the resolved date.
+- **Configurable formats**: Supports `Thu, Jan 16, 2020`, `Jan 16, 2020`, `2020-01-16`, and numeric dates.
+- **Live settings preview**: Test phrases against a sample sent date in the extension popup.
+
+## How it works
+
+The extension runs as a standard isolated-world content script. It watches Gmail for rendered message bodies, reads the full sent timestamp from Gmail’s message metadata, and annotates only eligible text nodes. It does not inject jQuery, Gmail.js, or page-context scripts, which keeps it compatible with Gmail’s Trusted Types policy.
 
 ---
 
@@ -29,12 +33,17 @@ A Chrome extension (Manifest V3) that intelligently detects and resolves relativ
    ```
 2. Install dependencies and build the extension:
    ```bash
-   npm install
+   npm ci
    npm run build
    ```
 3. Open Google Chrome (or any Chromium-based browser) and navigate to `chrome://extensions`.
 4. Enable **Developer mode** in the top-right corner.
-5. Click **Load unpacked** and select the `date_resolver` project directory.
+5. Click **Load unpacked** and select the `date_resolver` project directory—the directory containing `manifest.json` and the generated `dist/` folder.
+6. Open or refresh Gmail, then open an email containing a relative date.
+
+### Updating an existing unpacked install
+
+After pulling changes, run `npm ci && npm run build`, click the extension’s reload button on `chrome://extensions`, and refresh Gmail. Old entries in Chrome’s extension error log remain as history; only newly generated errors indicate a current problem.
 
 ---
 
@@ -45,6 +54,12 @@ A Chrome extension (Manifest V3) that intelligently detects and resolves relativ
 - `npm run test:watch` - Runs tests in interactive watch mode.
 - `npm run typecheck` - Performs TypeScript static type checking without emitting files.
 
+Run all checks before committing:
+
+```bash
+npm run typecheck && npm test && npm run build
+```
+
 ---
 
 ## Project Structure
@@ -52,21 +67,21 @@ A Chrome extension (Manifest V3) that intelligently detects and resolves relativ
 ```
 date_resolver/
 ├── .github/workflows/      # GitHub Actions CI matrix for Node.js LTS
-├── icons/                  # Extension SVG and icon assets
+├── icons/                  # Extension PNG icon assets
+├── scripts/build.mjs       # Bundles the extension and copies static files
 ├── src/
 │   ├── core/
 │   │   └── dateResolver.ts # Core NLP parsing & formatting engine (chrono-node)
 │   ├── content/
 │   │   ├── domAnnotator.ts # Safe DOM TreeWalker & highlight annotator
+│   │   ├── gmailDom.ts     # Gmail message timestamp reader
 │   │   └── styles.css      # Highlight pills and tooltip styling
 │   ├── popup/
 │   │   ├── popup.html      # Extension settings popup UI
 │   │   ├── popup.css       # Popup styles
 │   │   └── popup.ts        # Popup state management & live sandbox
 │   ├── types/              # TypeScript interfaces & definitions
-│   ├── extension.ts        # Main Gmail.js observer & orchestration script
-│   ├── extensionInjector.ts# Manifest V3 content script injector
-│   └── gmailJsLoader.ts    # Gmail.js bootstrap loader
+│   └── extension.ts        # Content-script Gmail DOM observer
 ├── tests/                  # Unit tests (Vitest + Happy-DOM)
 ├── manifest.json           # Manifest V3 configuration
 ├── package.json            # Dependencies & scripts

@@ -3,22 +3,17 @@ import fs from 'fs';
 import path from 'path';
 
 const distDir = path.resolve('dist');
-if (!fs.existsSync(distDir)) {
-  fs.mkdirSync(distDir, { recursive: true });
-}
+fs.rmSync(distDir, { recursive: true, force: true });
+fs.mkdirSync(distDir, { recursive: true });
 
 const distIconsDir = path.resolve('dist/icons');
-if (!fs.existsSync(distIconsDir)) {
-  fs.mkdirSync(distIconsDir, { recursive: true });
-}
+fs.mkdirSync(distIconsDir, { recursive: true });
 
 // 1. Bundle TypeScript entry points
 console.log('Building TypeScript bundles...');
 await esbuild.build({
   entryPoints: {
-    gmailJsLoader: 'src/gmailJsLoader.ts',
     extension: 'src/extension.ts',
-    extensionInjector: 'src/extensionInjector.ts',
     popup: 'src/popup/popup.ts',
   },
   outdir: 'dist',

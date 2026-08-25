@@ -12,13 +12,10 @@
   "author": "Robert Gehrsitz",
   "license": "MIT",
   "dependencies": {
-    "chrono-node": "^2.10.1",
-    "gmail-js": "^1.1.10",
-    "jquery": "^3.6.1"
+    "chrono-node": "^2.10.1"
   },
   "devDependencies": {
     "@types/chrome": "^0.2.7",
-    "@types/jquery": "^4.0.1",
     "@types/node": "^26.3.0",
     "esbuild": "^0.16.17",
     "happy-dom": "^17.4.7",
