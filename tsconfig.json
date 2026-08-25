@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "types": ["chrome", "jquery", "node"]
+    "types": ["chrome", "node"]
   },
   "include": ["src/**/*", "tests/**/*"]
 }
