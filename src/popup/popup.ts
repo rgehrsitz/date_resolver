@@ -1,6 +1,12 @@
 import { findDatesInText, DateFormatStyle } from '../core/dateResolver';
+import { CONSENT_STORAGE_KEY, hasGrantedConsent } from '../core/consent';
 import { ExtensionSettings, DEFAULT_SETTINGS, DisplayMode } from '../types/settings';
 
+const consentScreen = document.getElementById('consent-screen') as HTMLElement;
+const appContent = document.getElementById('app-content') as HTMLElement;
+const consentEnableButton = document.getElementById('consent-enable') as HTMLButtonElement;
+const consentDeclineButton = document.getElementById('consent-decline') as HTMLButtonElement;
+const withdrawConsentButton = document.getElementById('withdraw-consent') as HTMLButtonElement;
 const enabledToggle = document.getElementById('enabled-toggle') as HTMLInputElement;
 const displayModeSelect = document.getElementById('display-mode') as HTMLSelectElement;
 const formatStyleSelect = document.getElementById('format-style') as HTMLSelectElement;
@@ -9,6 +15,7 @@ const testTextInput = document.getElementById('test-text') as HTMLInputElement;
 const testOutputDiv = document.getElementById('test-output') as HTMLDivElement;
 
 let currentSettings: ExtensionSettings = { ...DEFAULT_SETTINGS };
+let consentGranted = false;
 
 function initSandboxDate() {
   const now = new Date();
@@ -72,13 +79,23 @@ function updateSandboxPreview() {
 
 function loadSettings() {
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-    chrome.storage.sync.get(['dateResolverSettings'], (result) => {
+    chrome.storage.sync.get(['dateResolverSettings', CONSENT_STORAGE_KEY], (result) => {
       if (result.dateResolverSettings) {
         currentSettings = { ...DEFAULT_SETTINGS, ...result.dateResolverSettings };
       }
-      applySettingsToUI();
+      consentGranted = hasGrantedConsent(result[CONSENT_STORAGE_KEY]);
+      render();
     });
   } else {
+    consentGranted = true;
+    render();
+  }
+}
+
+function render() {
+  consentScreen.hidden = consentGranted;
+  appContent.hidden = !consentGranted;
+  if (consentGranted) {
     applySettingsToUI();
   }
 }
@@ -102,12 +119,29 @@ function saveSettings() {
   updateSandboxPreview();
 }
 
+function setConsent(granted: boolean) {
+  consentGranted = granted;
+  currentSettings.enabled = granted;
+
+  if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
+    chrome.storage.sync.set({
+      [CONSENT_STORAGE_KEY]: granted,
+      dateResolverSettings: currentSettings,
+    });
+  }
+
+  render();
+}
+
 // Event Listeners
 enabledToggle.addEventListener('change', saveSettings);
 displayModeSelect.addEventListener('change', saveSettings);
 formatStyleSelect.addEventListener('change', saveSettings);
 testTextInput.addEventListener('input', updateSandboxPreview);
 testSentDateInput.addEventListener('change', updateSandboxPreview);
+consentEnableButton.addEventListener('click', () => setConsent(true));
+consentDeclineButton.addEventListener('click', () => setConsent(false));
+withdrawConsentButton.addEventListener('click', () => setConsent(false));
 
 // Initialize
 initSandboxDate();

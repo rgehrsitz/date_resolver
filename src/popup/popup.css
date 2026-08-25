@@ -19,6 +19,62 @@ body {
   gap: 14px;
 }
 
+.consent-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 2px;
+}
+
+.consent-screen h1 {
+  font-size: 18px;
+}
+
+.consent-screen p {
+  color: #3c4043;
+  line-height: 1.45;
+}
+
+.consent-icon {
+  align-items: center;
+  background-color: #e8f0fe;
+  border-radius: 50%;
+  color: #1a73e8;
+  display: flex;
+  font-size: 20px;
+  font-weight: 700;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 12px;
+}
+
+.primary-button {
+  background-color: #1a73e8;
+  border: 1px solid #1a73e8;
+  color: #fff;
+}
+
+.secondary-button {
+  background-color: #fff;
+  border: 1px solid #dadce0;
+  color: #3c4043;
+}
+
+.privacy-link {
+  color: #1a73e8;
+  font-size: 12px;
+  text-align: center;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -164,9 +220,23 @@ label {
 }
 
 .footer {
+  align-items: center;
   border-top: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   padding-top: 8px;
   font-size: 11px;
   color: #80868b;
   text-align: center;
+}
+
+.text-button {
+  background: none;
+  border: 0;
+  color: #1a73e8;
+  cursor: pointer;
+  font: inherit;
+  padding: 2px;
+  text-decoration: underline;
 }

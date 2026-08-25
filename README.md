@@ -20,6 +20,8 @@ A Manifest V3 Chrome extension that resolves relative dates in Gmail messages us
 
 The extension runs as a standard isolated-world content script. It watches Gmail for rendered message bodies, reads the full sent timestamp from Gmail’s message metadata, and annotates only eligible text nodes. It does not inject jQuery, Gmail.js, or page-context scripts, which keeps it compatible with Gmail’s Trusted Types policy.
 
+Before it accesses Gmail message content, Date Resolver requires an explicit opt-in from its popup. It processes message text and timestamps locally in the browser; see the [Privacy Policy](PRIVACY.md) for full details.
+
 ---
 
 ## Installation
@@ -39,11 +41,18 @@ The extension runs as a standard isolated-world content script. It watches Gmail
 3. Open Google Chrome (or any Chromium-based browser) and navigate to `chrome://extensions`.
 4. Enable **Developer mode** in the top-right corner.
 5. Click **Load unpacked** and select the `date_resolver` project directory—the directory containing `manifest.json` and the generated `dist/` folder.
-6. Open or refresh Gmail, then open an email containing a relative date.
+6. Open the extension popup and select **Enable Date Resolver**.
+7. Open or refresh Gmail, then open an email containing a relative date.
 
 ### Updating an existing unpacked install
 
 After pulling changes, run `npm ci && npm run build`, click the extension’s reload button on `chrome://extensions`, and refresh Gmail. Old entries in Chrome’s extension error log remain as history; only newly generated errors indicate a current problem.
+
+## Privacy and Chrome Web Store
+
+The extension reads visible Gmail message text and sent timestamps only after the user enables it, and it never transmits that data. The complete policy is in [PRIVACY.md](PRIVACY.md). For the Chrome Web Store listing, use its permanent GitHub URL:
+
+`https://github.com/rgehrsitz/date_resolver/blob/main/PRIVACY.md`
 
 ---
 

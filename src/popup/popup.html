@@ -8,7 +8,18 @@
 </head>
 <body>
   <div class="container">
-    <header class="header">
+    <section id="consent-screen" class="consent-screen" hidden>
+      <div class="consent-icon" aria-hidden="true">✓</div>
+      <h1>Enable Date Resolver?</h1>
+      <p>To resolve relative dates, Date Resolver reads the visible text and sent timestamps of Gmail messages while they are open.</p>
+      <p>Email content stays on your device. It is not transmitted, sold, or retained by this extension.</p>
+      <button id="consent-enable" class="primary-button" type="button">Enable Date Resolver</button>
+      <button id="consent-decline" class="secondary-button" type="button">Not now</button>
+      <a class="privacy-link" href="https://github.com/rgehrsitz/date_resolver/blob/main/PRIVACY.md" target="_blank" rel="noreferrer">Read the Privacy Policy</a>
+    </section>
+
+    <div id="app-content" hidden>
+      <header class="header">
       <div class="logo-title">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -22,9 +33,9 @@
         <input type="checkbox" id="enabled-toggle" checked>
         <span class="slider round"></span>
       </label>
-    </header>
+      </header>
 
-    <div class="settings-section">
+      <div class="settings-section">
       <div class="setting-item">
         <label for="display-mode">Display Mode</label>
         <select id="display-mode" class="select-input">
@@ -44,9 +55,9 @@
           <option value="short">1/16/2020</option>
         </select>
       </div>
-    </div>
+      </div>
 
-    <div class="sandbox-section">
+      <div class="sandbox-section">
       <h3>Live Date Preview</h3>
       <div class="sandbox-field">
         <label for="test-sent-date">Sample Email Sent Date</label>
@@ -60,11 +71,13 @@
         <label>Resolved Result</label>
         <div id="test-output" class="preview-box"></div>
       </div>
-    </div>
+      </div>
 
-    <footer class="footer">
-      <span>Auto-resolves relative dates relative to email sent time</span>
-    </footer>
+      <footer class="footer">
+        <span>Auto-resolves relative dates relative to email sent time</span>
+        <button id="withdraw-consent" class="text-button" type="button">Withdraw consent and disable</button>
+      </footer>
+    </div>
   </div>
   <script src="popup.js"></script>
 </body>
